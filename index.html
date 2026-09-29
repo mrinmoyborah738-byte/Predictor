@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big Daddy Sure Prediction - Login & Admin Panel</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #0b0b0b;
+            color: #f3f4f6;
+        }
+        .yellow-glow {
+            box-shadow: 0 0 25px rgba(234, 179, 8, 0.25);
+        }
+        .yellow-glow-subtle {
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.1);
+        }
+        /* Custom Scrollbar for Admin Table */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141414;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #eab308;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-yellow-500 selection:text-black">
+
+    <!-- Top Navigation / Header -->
+    <header class="w-full bg-[#111111] border-b border-yellow-500/20 py-4 px-6 flex justify-between items-center sticky top-0 z-40 backdrop-blur-md bg-opacity-90">
+        <div class="flex items-center space-x-2">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-yellow-600 to-yellow-400 flex items-center justify-center text-black font-extrabold text-lg yellow-glow-subtle">
+                BD
+            </div>
+            <span class="font-bold text-lg tracking-wider text-white">BIG DADDY <span class="text-yellow-400">PREDICTION</span></span>
+        </div>
+        <div>
+            <button onclick="openAdminModal()" class="bg-[#1f1f1f] hover:bg-yellow-500 hover:text-black border border-yellow-500/40 text-yellow-400 text-sm font-semibold px-4 py-2 rounded-xl transition duration-300 flex items-center space-x-2 cursor-pointer">
+                <i class="fa-solid fa-shield-halved"></i>
+                <span>Admin Panel</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content: Login Form Container -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6">
+        <div class="w-full max-w-md bg-[#141414] border border-yellow-500/20 rounded-3xl p-8 sm:p-10 yellow-glow relative overflow-hidden">
+            
+            <!-- Decorative Background Glow Accent -->
+            <div class="absolute -top-24 -right-24 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-yellow-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+            <!-- Form Header -->
+            <div class="text-center mb-8 relative z-10">
+                <span class="bg-yellow-500/10 text-yellow-400 text-xs font-semibold px-3 py-1 rounded-full border border-yellow-500/20 uppercase tracking-widest">
+                    Secure Access
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-white mt-3">Welcome Back</h1>
+                <p class="text-gray-400 text-sm mt-1">Enter your credentials to access sure predictions</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-5 relative z-10">
+                
+                <!-- Phone Number Input -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Phone Number</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-yellow-500">
+                            <i class="fa-solid fa-phone"></i>
+                        </div>
+                        <input type="tel" id="phoneNumber" required placeholder="Enter phone number" 
+                            class="w-full bg-[#1b1b1b] border border-gray-800 focus:border-yellow-500 text-white text-sm rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition duration-200 placeholder-gray-600">
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div>
+                    <label class="block text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-yellow-500">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <input type="password" id="password" required placeholder="••••••••" 
+                            class="w-full bg-[#1b1b1b] border border-gray-800 focus:border-yellow-500 text-white text-sm rounded-2xl pl-11 pr-12 py-3.5 focus:outline-none focus:ring-2 focus:ring-yellow-500/20 transition duration-200 placeholder-gray-600">
+                        <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-yellow-400 transition cursor-pointer">
+                            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember / Forgot -->
+                <div class="flex items-center justify-between text-xs text-gray-400 pt-1">
+                    <label class="flex items-center space-x-2 cursor-pointer">
+                        <input type="checkbox" class="rounded bg-[#1b1b1b] border-gray-800 text-yellow-500 focus:ring-yellow-500/20 w-4 h-4 accent-yellow-500">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" onclick="alert('Please contact admin for password assistance.'); return false;" class="hover:text-yellow-400 transition">Forgot Password?</a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full mt-2 bg-gradient-to-r from-yellow-500 to-yellow-400 hover:from-yellow-400 hover:to-yellow-300 text-black font-bold py-3.5 px-4 rounded-2xl shadow-lg shadow-yellow-500/20 transition duration-300 flex items-center justify-center space-x-2 cursor-pointer">
+                    <span>Login to Predict</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Notification banner inside form -->
+            <div id="loginAlert" class="hidden mt-4 p-3 rounded-xl text-xs text-center font-medium"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-[#111111] border-t border-yellow-500/10 py-4 text-center text-xs text-gray-500">
+        &copy; 2026 Big Daddy Sure Prediction. All rights reserved.
+    </footer>
+
+    <!-- Admin Panel PIN Modal -->
+    <div id="adminPinModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-[#141414] border border-yellow-500/30 w-full max-w-sm rounded-3xl p-6 yellow-glow">
+            <div class="text-center mb-5">
+                <div class="w-12 h-12 rounded-2xl bg-yellow-500/10 text-yellow-400 flex items-center justify-center mx-auto mb-3 text-xl border border-yellow-500/20">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h3 class="text-lg font-bold text-white">Admin Authentication</h3>
+                <p class="text-xs text-gray-400 mt-1">Enter PIN to access saved credentials (Default PIN: 1234)</p>
+            </div>
+            <form onsubmit="verifyAdminPin(event)">
+                <input type="password" id="adminPinInput" required maxlength="6" placeholder="Enter PIN (1234)" 
+                    class="w-full bg-[#1b1b1b] border border-gray-800 focus:border-yellow-500 text-white text-center tracking-widest text-lg rounded-2xl px-4 py-3 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-500/20">
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeAdminPinModal()" class="w-1/2 bg-[#1f1f1f] hover:bg-gray-800 text-gray-300 font-semibold py-3 rounded-2xl text-sm transition">Cancel</button>
+                    <button type="submit" class="w-1/2 bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 rounded-2xl text-sm transition">Unlock</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal -->
+    <div id="adminDashboardModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex flex-col p-4 sm:p-6">
+        <div class="max-w-4xl w-full mx-auto bg-[#141414] border border-yellow-500/30 rounded-3xl flex flex-col h-[90vh] yellow-glow overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-5 sm:p-6 border-b border-gray-800 flex justify-between items-center bg-[#111111]">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-yellow-500/10 text-yellow-400 flex items-center justify-center text-lg border border-yellow-500/20">
+                        <i class="fa-solid fa-database"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">Admin Panel - Saved Credentials</h2>
+                        <p class="text-xs text-gray-400">All registered user phone numbers & passwords</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button onclick="clearAllData()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-xs font-semibold px-3 py-2 rounded-xl transition flex items-center space-x-1 cursor-pointer">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span class="hidden sm:inline">Clear All</span>
+                    </button>
+                    <button onclick="closeAdminDashboard()" class="w-9 h-9 rounded-xl bg-[#1f1f1f] hover:bg-gray-800 text-gray-300 flex items-center justify-center transition cursor-pointer">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal Body (Table list) -->
+            <div class="flex-grow p-4 sm:p-6 overflow-y-auto">
+                <div id="noDataState" class="hidden h-full flex flex-col items-center justify-center text-center text-gray-500">
+                    <i class="fa-solid fa-box-open text-4xl mb-3 text-gray-600"></i>
+                    <p class="text-sm font-medium">No user credentials saved yet.</p>
+                    <p class="text-xs text-gray-600 mt-1">Try logging in with a phone number to see records here.</p>
+                </div>
+                <div id="tableContainer" class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-xs uppercase tracking-wider text-yellow-500">
+                                <th class="py-3 px-4 font-semibold">#</th>
+                                <th class="py-3 px-4 font-semibold">Phone Number</th>
+                                <th class="py-3 px-4 font-semibold">Password</th>
+                                <th class="py-3 px-4 font-semibold">Timestamp</th>
+                                <th class="py-3 px-4 font-semibold text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody" class="text-sm divide-y divide-gray-900">
+                            <!-- Injected via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="p-4 bg-[#111111] border-t border-gray-800 flex justify-between items-center text-xs text-gray-400">
+                <span id="totalUsersCount">Total Records: 0</span>
+                <button onclick="closeAdminDashboard()" class="bg-[#1f1f1f] hover:bg-gray-800 text-white font-medium px-4 py-2 rounded-xl transition">Close Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Toggle password visibility
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Handle Login Submission
+        function handleLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('phoneNumber').value.trim();
+            const password = document.getElementById('password').value;
+            const alertBox = document.getElementById('loginAlert');
+
+            if (!phone || !password) return;
+
+            // Create user object
+            const newUser = {
+                id: Date.now(),
+                phone: phone,
+                password: password,
+                timestamp: new Date().toLocaleString()
+            };
+
+            // Retrieve existing users from localStorage or initialize empty array
+            let users = JSON.parse(localStorage.getItem('bigDaddyUsers')) || [];
+
+            // Push new login record to top of array
+            users.unshift(newUser);
+
+            // Save back to localStorage
+            localStorage.setItem('bigDaddyUsers', JSON.stringify(users));
+
+            // Show success alert
+            alertBox.className = "mt-4 p-3 rounded-xl text-xs text-center font-medium bg-yellow-500/10 text-yellow-400 border border-yellow-500/20";
+            alertBox.innerHTML = "<i class='fa-solid fa-circle-check mr-1'></i> Login successful! Credentials saved to admin panel.";
+            alertBox.classList.remove('hidden');
+
+            // Reset form after short delay
+            setTimeout(() => {
+                document.getElementById('loginForm').reset();
+                alertBox.classList.add('hidden');
+            }, 1500);
+        }
+
+        // Admin Panel Flow
+        function openAdminModal() {
+            document.getElementById('adminPinInput').value = '';
+            document.getElementById('adminPinModal').classList.remove('hidden');
+            document.getElementById('adminPinInput').focus();
+        }
+
+        function closeAdminPinModal() {
+            document.getElementById('adminPinModal').classList.add('hidden');
+        }
+
+        function verifyAdminPin(event) {
+            event.preventDefault();
+            const pin = document.getElementById('adminPinInput').value;
+            // Default admin PIN is 1234
+            if (pin === '1234') {
+                closeAdminPinModal();
+                loadAdminData();
+                document.getElementById('adminDashboardModal').classList.remove('hidden');
+            } else {
+                alert('Incorrect Admin PIN! Default PIN is 1234');
+                document.getElementById('adminPinInput').value = '';
+            }
+        }
+
+        function closeAdminDashboard() {
+            document.getElementById('adminDashboardModal').classList.add('hidden');
+        }
+
+        // Load saved credentials into Admin Table
+        function loadAdminData() {
+            const users = JSON.parse(localStorage.getItem('bigDaddyUsers')) || [];
+            const tbody = document.getElementById('adminTableBody');
+            const noDataState = document.getElementById('noDataState');
+            const tableContainer = document.getElementById('tableContainer');
+            const totalCount = document.getElementById('totalUsersCount');
+
+            tbody.innerHTML = '';
+            totalCount.innerText = `Total Records: ${users.length}`;
+
+            if (users.length === 0) {
+                noDataState.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                return;
+            }
+
+            noDataState.classList.add('hidden');
+            tableContainer.classList.remove('hidden');
+
+            users.forEach((user, index) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-yellow-500/5 transition";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 text-gray-500 font-mono text-xs">${index + 1}</td>
+                    <td class="py-3 px-4 font-medium text-white font-mono">${escapeHtml(user.phone)}</td>
+                    <td class="py-3 px-4 text-yellow-400 font-mono">${escapeHtml(user.password)}</td>
+                    <td class="py-3 px-4 text-gray-400 text-xs">${escapeHtml(user.timestamp)}</td>
+                    <td class="py-3 px-4 text-right">
+                        <button onclick="deleteUserRecord(${user.id})" class="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition cursor-pointer" title="Delete record">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Delete single record
+        function deleteUserRecord(id) {
+            let users = JSON.parse(localStorage.getItem('bigDaddyUsers')) || [];
+            users = users.filter(user => user.id !== id);
+            localStorage.setItem('bigDaddyUsers', JSON.stringify(users));
+            loadAdminData();
+        }
+
+        // Clear all records
+        function clearAllData() {
+            if (confirm("Are you sure you want to delete all saved user credentials?")) {
+                localStorage.removeItem('bigDaddyUsers');
+                loadAdminData();
+            }
+        }
+
+        // Utility to prevent XSS in table view
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+    </script>
+</body>
+</html>
